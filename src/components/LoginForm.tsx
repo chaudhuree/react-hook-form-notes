@@ -11,6 +11,7 @@ function LoginForm() {
         facebook: "",
         twitter: "",
       },
+      phone: ["", ""],
     },
   });
   const { errors } = formState;
@@ -23,6 +24,7 @@ function LoginForm() {
       facebook: string;
       twitter: string;
     };
+    phone: string[];
   };
 
   const onSubmit = (data: FormValues) => {
@@ -91,6 +93,14 @@ function LoginForm() {
         <div className="form-control">
           <label htmlFor="twitter">Twitter</label>
           <input type="text" id="twitter" {...register("social.twitter")} />
+        </div>
+        <div className="form-control">
+          <label htmlFor="primary">Primary number</label>
+          <input type="text" id="primary" {...register("phone.0")} />
+        </div>
+        <div className="form-control">
+          <label htmlFor="secondary">Secondary number</label>
+          <input type="text" id="secondary" {...register("phone.1")} />
         </div>
 
         <button>Submit</button>
