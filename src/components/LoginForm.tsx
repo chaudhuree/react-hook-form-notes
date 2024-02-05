@@ -1,20 +1,7 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 function LoginForm() {
-  const { register, control, handleSubmit, formState } = useForm({
-    defaultValues: {
-      username: "",
-      email: "",
-      channel: "",
-      social: {
-        facebook: "",
-        twitter: "",
-      },
-      phone: ["", ""],
-    },
-  });
-  const { errors } = formState;
   // typescript types
   type FormValues = {
     username: string;
@@ -25,7 +12,36 @@ function LoginForm() {
       twitter: string;
     };
     phone: string[];
+    address: {
+      street: string;
+      city: string;
+    }[];
   };
+  const { register, control, handleSubmit, formState } = useForm({
+    defaultValues: {
+      username: "",
+      email: "",
+      channel: "",
+      social: {
+        facebook: "",
+        twitter: "",
+      },
+      phone: ["", ""],
+      address: [
+        {
+          street: "",
+          city: "",
+        },
+      ],
+    },
+  });
+  const { errors } = formState;
+
+  // dynamic form fields
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "address",
+  });
 
   const onSubmit = (data: FormValues) => {
     console.log(data);
@@ -102,6 +118,42 @@ function LoginForm() {
           <label htmlFor="secondary">Secondary number</label>
           <input type="text" id="secondary" {...register("phone.1")} />
         </div>
+
+        <div>
+          {fields.map((field, index) => (
+            <div key={field.id} className="my-10 d-flex">
+              <div className="form-control ">
+                <label htmlFor="street">Street</label>
+                <input
+                  type="text"
+                  id="street"
+                  {...register(`address.${index}.street` as const)}
+                  defaultValue={field.street}
+                />
+              </div>
+              <div className="form-control ">
+                <label htmlFor="city">City</label>
+                <input
+                  type="text"
+                  id="city"
+                  {...register(`address.${index}.city` as const)}
+                  defaultValue={field.city}
+                />
+              </div>
+              <button  type="button" onClick={() => remove(index)}>
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            append({ street: "", city: "" });
+          }}
+        >
+          Add Address
+        </button>
 
         <button>Submit</button>
       </form>
