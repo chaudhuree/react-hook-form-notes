@@ -49,6 +49,7 @@ function LoginForm() {
                 value: true,
                 message: "email is required",
               },
+              validate: (value) => value !== "admin@mail.com" || "this email is not supported!",
             })}
           />
           {<p className="error">{errors.email?.message}</p>}
@@ -63,7 +64,7 @@ function LoginForm() {
               required: {
                 value: true,
                 message: "channel is required",
-              },
+              }
             })}
           />
           {<p className="error">{errors.channel?.message}</p>}
