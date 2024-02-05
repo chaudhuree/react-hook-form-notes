@@ -2,13 +2,27 @@ import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 function LoginForm() {
-  const { register, control, handleSubmit, formState } = useForm<FormValues>();
+  const { register, control, handleSubmit, formState } = useForm({
+    defaultValues: {
+      username: "",
+      email: "",
+      channel: "",
+      social: {
+        facebook: "",
+        twitter: "",
+      },
+    },
+  });
   const { errors } = formState;
   // typescript types
   type FormValues = {
     username: string;
     email: string;
     channel: string;
+    social: {
+      facebook: string;
+      twitter: string;
+    };
   };
 
   const onSubmit = (data: FormValues) => {
@@ -49,7 +63,8 @@ function LoginForm() {
                 value: true,
                 message: "email is required",
               },
-              validate: (value) => value !== "admin@mail.com" || "this email is not supported!",
+              validate: (value) =>
+                value !== "admin@mail.com" || "this email is not supported!",
             })}
           />
           {<p className="error">{errors.email?.message}</p>}
@@ -64,10 +79,18 @@ function LoginForm() {
               required: {
                 value: true,
                 message: "channel is required",
-              }
+              },
             })}
           />
           {<p className="error">{errors.channel?.message}</p>}
+        </div>
+        <div className="form-control">
+          <label htmlFor="facebook">Facebook</label>
+          <input type="text" id="facebook" {...register("social.facebook")} />
+        </div>
+        <div className="form-control">
+          <label htmlFor="twitter">Twitter</label>
+          <input type="text" id="twitter" {...register("social.twitter")} />
         </div>
 
         <button>Submit</button>
