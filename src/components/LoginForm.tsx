@@ -38,6 +38,7 @@ function LoginForm() {
       age: 0,
       dateOfBirth: new Date(),
     },
+    mode: "onBlur",
   });
   const { errors } = formState;
 
