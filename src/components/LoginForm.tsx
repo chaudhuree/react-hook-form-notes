@@ -145,8 +145,8 @@ function LoginForm() {
               </button>
             </div>
           ))}
-        </div>
-        <button
+          {/* add new field */}
+          <button
           type="button"
           onClick={() => {
             append({ street: "", city: "" });
@@ -154,6 +154,8 @@ function LoginForm() {
         >
           Add Address
         </button>
+        </div>
+        
 
         <button>Submit</button>
       </form>
